@@ -39,7 +39,7 @@ class UserController extends Controller
 					$subscription->user_id = $user->id;
 					$subscription->quantity = $sub->planQuantity;
 					$subscription->save();
-					print_r($c); echo '<br>';
+					// print_r($c); echo '<br>';
 				}
 			}
 		}
