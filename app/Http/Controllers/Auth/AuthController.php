@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use ChargeBee_Subscription;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -37,6 +38,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
@@ -49,7 +51,6 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -63,10 +64,33 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        $cb_obj = ChargeBee_Customer::all(array(
+            "limit" => 1,
+            "email[is]" => $data['email'],
+        ));
+        foreach ($cb_obj as $cb_customer) {
+            $customer = $cb_customer->customer();
+            $cb_subs = ChargeBee_Subscription::all(array(
+                "limit" => 1, 
+                "customerId[is]" => $customer->id,
+                "status[is]" => 'active',
+            ));
+            if (count($cb_subs) > 0) {
+                foreach ($cb_subs as $cb_sub) {
+                    $sub = $cb_sub->subscription();
+                }
+            } else {
+                $errors = ['Chargebee customer does not exists!'];
+                return view('register', compact('errors'));
+            }
+        }
+
+        // return User::create([
+        //     'name' => $data['name'],
+        //     'last_name' => $data['last_name'],
+        //     'email' => $data['email'],
+        //     'phone' => $data['phone'],
+        //     'password' => bcrypt($data['password']),
+        // ]);
     }
 }
