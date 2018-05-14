@@ -12,10 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('dashboard');
 });
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/dashboard', 'HomeController@dashboard');
+Route::get('/test', 'HomeController@test');
+
+
 Route::get('/get_cb_users', 'UserController@get_cb_users');

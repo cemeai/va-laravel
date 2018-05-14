@@ -7,22 +7,39 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Billing Address</div>
 				<div class="panel-body">
-					{{ $cb_sub->shippingAddress->line1 }} <br>
-					{{ $cb_sub->shippingAddress->city }} - 
-					{{ $cb_sub->shippingAddress->zip }} <br>
-					{{ $cb_sub->shippingAddress->stateCode }}, 
-					{{ $cb_sub->shippingAddress->country }}
+					@if (false)
+						{{ $cb_billing->line1 }} <br>
+						{{ $cb_billing->city }} - 
+						{{ $cb_billing->zip }} <br>
+						{{ $cb_billing->stateCode }}, 
+						{{ $cb_billing->country }}
+					@endif
 				</div>
 			</div>
 			<div class="panel panel-default">
 				<div class="panel-heading">Card Information</div>
 				<div class="panel-body">
-					{{ $cb_card->firstName }}
-					{{ $cb_card->lastName }} <br>
-					{{ $cb_card->maskedNumber }} <br>
-					{{ $cb_card->expiryMonth }} - 
-					{{ $cb_card->expiryYear }} <br>
-					{{ $cb_card->issuingCountry }}
+					@if (!isset($cb_card))
+						{{ $cb_card->firstName }}
+						{{ $cb_card->lastName }} <br>
+						{{ $cb_card->maskedNumber }} <br>
+						{{ $cb_card->expiryMonth }} - 
+						{{ $cb_card->expiryYear }} <br>
+						{{ $cb_card->issuingCountry }}
+					@endif
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">Card Information</div>
+				<div class="panel-body">
+					@if (!isset($cb_card))
+						{{ $cb_card->firstName }}
+						{{ $cb_card->lastName }} <br>
+						{{ $cb_card->maskedNumber }} <br>
+						{{ $cb_card->expiryMonth }} - 
+						{{ $cb_card->expiryYear }} <br>
+						{{ $cb_card->issuingCountry }}
+					@endif
 				</div>
 			</div>
 		</div>
