@@ -82,7 +82,7 @@ class AuthController extends Controller
             } else {
                 $errors = ['Chargebee customer does not exists!'];
                 return view('register', compact('errors'));
-            }
+            }   
         }
 
         // return User::create([
