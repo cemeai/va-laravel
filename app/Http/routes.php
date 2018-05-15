@@ -17,8 +17,8 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::get('/dashboard', 'HomeController@dashboard');
-Route::get('/test', 'HomeController@test');
-
+Route::get('dashboard', 'HomeController@dashboard');
+Route::get('test', 'HomeController@test');
+Route::get('googleLogin', 'UserController@googleLogin');
 
 Route::get('/get_cb_users', 'UserController@get_cb_users');
