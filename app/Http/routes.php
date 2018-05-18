@@ -11,14 +11,20 @@
 |
 */
 
+// DEFUALT
 Route::get('/', function () {
     return redirect('dashboard');
 });
 
+// LOGINS / REGISTER
+// Route::get('test', 'HomeController@test');
+Route::get('googleLogin', 'UserController@googleLogin');
 Route::auth();
 
+// MENU
 Route::get('dashboard', 'HomeController@dashboard');
-Route::get('test', 'HomeController@test');
-Route::get('googleLogin', 'UserController@googleLogin');
+Route::get('billing', 'HomeController@billing');
 
+// ACTIONS
 Route::get('/get_cb_users', 'UserController@get_cb_users');
+Route::post('/update_billing', 'UserController@update_billing');
