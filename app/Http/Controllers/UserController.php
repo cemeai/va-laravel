@@ -7,10 +7,17 @@ use App\Http\Requests;
 use ChargeBee_Environment;
 use ChargeBee_Customer;
 use ChargeBee_Subscription;
+use Auth;
 use App\User;
+use App\State;
 use App\Subscription;
 
 class UserController extends Controller {
+
+	public function __construct()
+	{
+		parent::__construct();
+	}
 
 	public function get_cb_users () {
 		ChargeBee_Environment::configure(getenv('CHARGEBEE_SITE'), getenv('CHARGEBEE_KEY'));
@@ -44,6 +51,37 @@ class UserController extends Controller {
 				// print_r($c); echo '<br>';
 			}
 		}
+	}
+
+	public function update_billing (Request $request) {
+		// print_r($request['state']); exit();
+		$sub_id = Auth::user()->subscription->subscription_id;
+		$cb_obj = ChargeBee_Subscription::update($sub_id, array(
+			"billingAddress" => array(
+				"firstName" => $request['name'], 
+				"lastName" => $request['last_name'], 
+				"line1" => $request['address_1'], 
+				"line2" => $request['address_2'], 
+				"city" => $request['city'], 
+				"state" => State::find($request['state'])->name, 
+				"zip" => $request['zipcode'], 
+				"country" => 'US', 
+		)));
+		$cb_sub = $cb_obj->subscription();
+		$cb_customer = $cb_obj->customer()->billingAddress;
+		$data = [
+			'name' => $cb_customer->firstName,
+			'last_name' => $cb_customer->last_name,
+			'address_1' => $cb_customer->line1,
+			'address_2' => $cb_customer->line2,
+			'city' => $cb_customer->city,
+			'state' => $cb_customer->state,
+			'zipcode' => $cb_customer->zip,
+			'country' => $cb_customer->country,
+		];
+
+		echo json_encode($data);
+		// print_r($cb_obj->customer()->billingAddress->firstName);
 	}
 
 	public function googleLogin (Request $request) {
