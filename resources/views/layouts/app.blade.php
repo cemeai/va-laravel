@@ -17,9 +17,11 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- CUSTOM STYLE -->
+    @yield('styles')
     <style>
         body {
             font-family: 'Lato';
+            font-size: 16px;
         }
 
         .fa-btn {

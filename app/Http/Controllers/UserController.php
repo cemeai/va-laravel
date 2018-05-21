@@ -84,6 +84,33 @@ class UserController extends Controller {
 		// print_r($cb_obj->customer()->billingAddress->firstName);
 	}
 
+		public function update_payment (Request $request) {
+		// print_r($request['state']); exit();
+		$sub_id = Auth::user()->subscription->subscription_id;
+		$cb_obj = ChargeBee_Subscription::update($sub_id, array(
+			"card" => array(
+				"firstName" => $request['name'], 
+				"lastName" => $request['last_name'], 
+				"number" => $request['card_number'], 
+				"expiryMonth" => $request['expiryMonth'], 
+				"expiryYear" => $request['expiryYear'], 
+				"cvv" => $request['city'], 
+				"cardType" => $request['card_type'], 
+		)));
+		$cb_sub = $cb_obj->subscription();
+		$cb_card = $cb_obj->card();
+		$data = [
+			'name' => $cb_card->firstName,
+			'lname' => $cb_card->lastName,
+			'ctype' => $cb_card->cardType,
+			'cnumber' => $cb_card->maskedNumber,
+			'cexpiry' => $cb_card->expiryMonth .'/'. $cb_card->expiryYear,
+		];
+
+		echo json_encode($data);
+		// print_r($cb_obj->customer()->billingAddress->firstName);
+	}
+
 	public function googleLogin (Request $request) {
 		$google_redirect_url = route('googleLogin');
 		$gClient = new \Google_Client();

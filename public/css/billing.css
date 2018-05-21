@@ -1,0 +1,19 @@
+.card_type .selected {
+	border: solid 1px #00F;
+}
+
+.card_type {
+	height: 46px;
+}
+
+.card_type .v { background: url('../img/Visa.png'); }
+.card_type .m { background: url('../img/Mastercard.png'); }
+.card_type .a { background: url('../img/Amex.png'); }
+.card_type .d { background: url('../img/Discover.png'); }
+.card_type div {
+	cursor: pointer;
+	height: 46px;
+	margin-right: 3%;
+	background-size: contain !important;
+	background-repeat: no-repeat !important;
+}

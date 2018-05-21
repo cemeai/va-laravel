@@ -28,3 +28,4 @@ Route::get('billing', 'HomeController@billing');
 // ACTIONS
 Route::get('/get_cb_users', 'UserController@get_cb_users');
 Route::post('/update_billing', 'UserController@update_billing');
+Route::post('/update_payment', 'UserController@update_payment');
