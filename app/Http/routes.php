@@ -25,7 +25,7 @@ Route::auth();
 Route::get('dashboard', 'HomeController@dashboard');
 Route::get('billing', 'HomeController@billing');
 Route::get('test_api_login', function (Request $request) {
-	print_r($request);
+	print_r($request->auth_session_id);
 });
 
 // ACTIONS
