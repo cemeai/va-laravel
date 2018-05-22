@@ -32,14 +32,38 @@
 							<label for="name_billing">First Name</label>
 							<input type="text" class="form-control" id="name_billing" placeholder="Jane" value="{{ !is_null($cb_billing)? $cb_billing->firstName:'' }}">
 						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="last_name_billing">Last Name</label>
+							<input type="text" class="form-control" id="last_name_billing" placeholder="Doe" value="{{ !is_null($cb_billing)? $cb_billing->lastName:'' }}">
+						</div>
+					</div>
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="address_1">Address 1</label>
 							<input type="text" class="form-control" id="address_1" placeholder="# Street" value="{{ !is_null($cb_billing)? $cb_billing->line1:'' }}">
 						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="address_2">Address 2</label>
+							<input type="text" class="form-control" id="address_2" placeholder="# Street" value="{{ !is_null($cb_billing)? $cb_billing->line2:'' }}">
+						</div>
+					</div>
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="zipcode">Zip Code</label>
 							<input type="text" class="form-control" id="zipcode" placeholder="12345" value="{{ !is_null($cb_billing)? $cb_billing->zip:'' }}">
 						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="city">City</label>
+							<input type="text" class="form-control" id="city" placeholder="San Francisco" value="{{ !is_null($cb_billing)? $cb_billing->city:'' }}">
+						</div>
+					</div>
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="state">State</label>
 							<select class="form-control" id="state">
@@ -52,24 +76,12 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="last_name_billing">Last Name</label>
-							<input type="text" class="form-control" id="last_name_billing" placeholder="Doe" value="{{ !is_null($cb_billing)? $cb_billing->lastName:'' }}">
-						</div>
-						<div class="form-group">
-							<label for="address_2">Address 2</label>
-							<input type="text" class="form-control" id="address_2" placeholder="# Street" value="{{ !is_null($cb_billing)? $cb_billing->line2:'' }}">
-						</div>
-						<div class="form-group">
-							<label for="city">City</label>
-							<input type="text" class="form-control" id="city" placeholder="San Francisco" value="{{ !is_null($cb_billing)? $cb_billing->city:'' }}">
-						</div>
-						<div class="form-group">
 							<label for="Country">Country</label>
 							<input type="text" class="form-control" id="country" placeholder="United states" value="United States" readonly>
 						</div>
 					</div>
-					<div class="col-md-2 centered">
-						<button class="btn btn-success col-md-12" onclick="save_billing()">Save</button>
+					<div class="col-md-2 col-sm-2 centered">
+						<button class="btn btn-success col-md-12 col-xs-12" onclick="save_billing()">Save</button>
 					</div>
 				</div>
 			</div>
@@ -113,10 +125,26 @@
 							<label for="name_payment">First Name*</label>
 							<input type="text" class="form-control" id="name_payment" placeholder="Jane" value="{{ !is_null($cb_card)? $cb_card->firstName:'' }}">
 						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="last_name">Last Name*</label>
+							<input type="text" class="form-control" id="last_name_payment" placeholder="Doe" value="{{ !is_null($cb_card)? $cb_card->lastName:'' }}">
+						</div>
+					</div>
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="expiryMonth">Card Number*</label>
 							<input type="text" class="form-control" id="card_number" placeholder="xxxx xxxx xxxx 1234" value="{{ !is_null($cb_card)? $cb_card->maskedNumber:'' }}">
 						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="cvv">CVV*</label>
+							<input type="text" class="form-control" id="cvv" placeholder="123">
+						</div>
+					</div>
+					<div class="col-md-6">
 						<div class="form-group">
 							<label for="expiry">Expiry Date*</label>
 							<div class="row">
@@ -135,25 +163,6 @@
 									</select>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<label for="last_name">Last Name*</label>
-							<input type="text" class="form-control" id="last_name_payment" placeholder="Doe" value="{{ !is_null($cb_card)? $cb_card->lastName:'' }}">
-						</div>
-						<div class="form-group">
-							<label for="card_type">Card Type*</label>
-							<div class="card_type">
-								<div class="col-xs-2 v {{ !is_null($cb_card) && $cb_card->cardType == 'visa'? 'selected': '' }}" data-value="visa"></div>
-								<div class="col-xs-2 m {{ !is_null($cb_card) && $cb_card->cardType == 'mastercard'? 'selected': '' }}" data-value="mastercard"></div>
-								<div class="col-xs-2 a {{ !is_null($cb_card) && $cb_card->cardType == 'american_express'? 'selected': '' }}" data-value="american_express"></div>
-								<div class="col-xs-2 d {{ !is_null($cb_card) && $cb_card->cardType == 'discover'? 'selected': '' }}" data-value="discover"></div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="cvv">CVV*</label>
-							<input type="text" class="form-control" id="cvv" placeholder="123">
 						</div>
 					</div>
 					<div class="col-md-2 centered">
