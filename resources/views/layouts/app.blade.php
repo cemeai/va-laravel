@@ -64,7 +64,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
+                        <li><a href="{{ url('https://vatoday-test.chargebeeportal.com/portal/login?return_url=https://portal.virtualassistants.today/api-login&cancel_url=https://portal.virtualassistants.today/api-login') }}">Login</a></li>
                         <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
