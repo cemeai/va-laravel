@@ -24,6 +24,9 @@ Route::auth();
 // MENU
 Route::get('dashboard', 'HomeController@dashboard');
 Route::get('billing', 'HomeController@billing');
+Route::get('test_api_login', function (Request $request) {
+	print_r($request);
+});
 
 // ACTIONS
 Route::get('/get_cb_users', 'UserController@get_cb_users');

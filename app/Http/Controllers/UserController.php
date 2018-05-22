@@ -95,7 +95,6 @@ class UserController extends Controller {
 				"expiryMonth" => $request['expiryMonth'], 
 				"expiryYear" => $request['expiryYear'], 
 				"cvv" => $request['city'], 
-				"cardType" => $request['card_type'], 
 		)));
 		$cb_sub = $cb_obj->subscription();
 		$cb_card = $cb_obj->card();
