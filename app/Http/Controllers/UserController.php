@@ -84,7 +84,7 @@ class UserController extends Controller {
 		// print_r($cb_obj->customer()->billingAddress->firstName);
 	}
 
-		public function update_payment (Request $request) {
+	public function update_payment (Request $request) {
 		// print_r($request['state']); exit();
 		$sub_id = Auth::user()->subscription->subscription_id;
 		$cb_obj = ChargeBee_Subscription::update($sub_id, array(
@@ -111,44 +111,43 @@ class UserController extends Controller {
 	}
 
 	public function googleLogin (Request $request) {
-		$google_redirect_url = route('googleLogin');
-		$gClient = new \Google_Client();
-		$gClient->setApplicationName(config('services.google.app_name'));
-		$gClient->setClientId(config('services.google.client_id'));
-		$gClient->setClientSecret(config('services.google.client_secret'));
-		$gClient->setRedirectUri($google_redirect_url);
-		$gClient->setDeveloperKey(config('services.google.api_key'));
-		$gClient->setScopes(array(
-			'https://www.googleapis.com/auth/plus.me',
-			'https://www.googleapis.com/auth/userinfo.email',
-			'https://www.googleapis.com/auth/userinfo.profile',
+	}
+
+	public function harvest_test (Request $request) {
+		$curl = curl_init();
+		$harvest_id = Auth::user()->subscription->harvest_id;
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.harvestapp.com/v2/time_entries",
+			// CURLOPT_URL => "https://api.harvestapp.com/v2/projects",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_TIMEOUT => 30000,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_HTTPHEADER => array(
+				'Harvest-Account-ID: '.getenv('HARVEST_ACCOUNT_ID'),
+				'Authorization: Bearer '.getenv('HARVEST_ACCESS_TOKEN'),
+				'User-Agent: VA-Now (support@va.today)',
+			),
 		));
-		$google_oauthV2 = new \Google_Service_Oauth2($gClient);
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
 
-		if ($request->get('code')) {
-			$gClient->authenticate($request->get('code'));
-			$request->session()->put('token', $gClient->getAccessToken());
-		}
-
-		if ($request->session()->get('token')) {
-			$gClient->setAccessToken($request->session()->get('token'));
-		}
-
-		if ($gClient->getAccessToken()) {
-			//For logged in user, get details from google using access token
-			$guser = $google_oauthV2->userinfo->get();  
-				 
-			$request->session()->put('name', $guser['name']);
-			if ($user = User::where('email',$guser['email'])->first()) {
-				//logged your user via auth login
-			} else {
-				//register your user with response data
-			}               
-			return redirect()->route('user.glist');          
+		if ($err) {
+			echo "cURL Error #:" . $err;
 		} else {
-			//For Guest user, get google login url
-			$authUrl = $gClient->createAuthUrl();
-			return redirect()->to($authUrl);
+			$time_entries = json_decode($response, 1);
+			// print_r($time_entries); exit();
+			foreach ($time_entries['time_entries'] as $key => $entry) {
+				if ($entry['project']['id'] == $harvest_id) {
+					print_r($entry); echo '<br>';
+				}
+				// echo $project['id'].'-'.
+				// 	$project['client']['name'].'-'.
+				// 	$project['name'].'-'.
+				// 	$project['code'].'<br>';
+			}
 		}
 	}
 }
