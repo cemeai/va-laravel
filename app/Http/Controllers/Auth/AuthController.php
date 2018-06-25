@@ -56,7 +56,7 @@ class AuthController extends Controller
         ]);
     }
 
-    private function authenticate_CB ($request) {
+    private function authenticate_CB ($auth_session_id, $auth_session_token) {
         print_r($request); exit();
         $result = ChargeBee_PortalSession::activate($params['cb_auth_session_id'], array(
                     "token" => $params['cb_auth_session_token']));
