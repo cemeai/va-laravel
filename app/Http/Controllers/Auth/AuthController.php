@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\User;
 use Validator;
 use ChargeBee_Subscription;
+use ChargeBee_PortalSession;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -56,10 +59,9 @@ class AuthController extends Controller
         ]);
     }
 
-    private function authenticate_CB ($auth_session_id, $auth_session_token) {
-        print_r($request); exit();
-        $result = ChargeBee_PortalSession::activate($params['cb_auth_session_id'], array(
-                    "token" => $params['cb_auth_session_token']));
+    public function authenticate_CB (Request $request) {
+        $result = ChargeBee_PortalSession::activate($request->auth_session_id, array(
+                "token" => $request->auth_session_token));
 
         // $linked_customers = $result->portalSession()->linkedCustomers;
         // $cb_customer_email = $linked_customers[0]->email;
