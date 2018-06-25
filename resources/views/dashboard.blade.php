@@ -20,7 +20,10 @@
 				</div>
 			</div>
 			<div class="panel panel-default">
-				<div class="panel-heading">Invoices</div>
+				<div class="panel-heading">
+					Invoices
+					<div class="pull-right"><a href="invoices">More</a></div>
+				</div>
 				<div class="panel-body">
 					<table class="table table-hover">
 						<thead>

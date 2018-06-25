@@ -56,6 +56,23 @@ class AuthController extends Controller
         ]);
     }
 
+    private function authenticate_CB ($request) {
+        print_r($request); exit();
+        $result = ChargeBee_PortalSession::activate($params['cb_auth_session_id'], array(
+                    "token" => $params['cb_auth_session_token']));
+
+        // $linked_customers = $result->portalSession()->linkedCustomers;
+        // $cb_customer_email = $linked_customers[0]->email;
+        // $customer_id = $result->portalSession()->customerId;
+        // $listOfSubscription = ChargeBee_Subscription::subscriptionsForCustomer($customer_id);
+        // foreach ($listOfSubscription as $value) {
+        //     $subscriptionDetails[] = $value;
+        // }        
+        // $subscriptionDetails = $subscriptionDetails[0];
+        // $subscription = $subscriptionDetails->subscription();
+        // $this->setSubscriptionId($subscription->id);
+    }
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -82,7 +99,7 @@ class AuthController extends Controller
             } else {
                 $errors = ['Chargebee customer does not exists!'];
                 return view('register', compact('errors'));
-            }   
+            }
         }
 
         // return User::create([
