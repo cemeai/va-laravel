@@ -26,7 +26,7 @@ Route::get('dashboard', 'HomeController@dashboard');
 Route::get('usage', 'HomeController@usage');
 Route::get('billing', 'HomeController@billing');
 Route::get('invoices', 'HomeController@invoices');
-Route::get('api_login', 'AuthController@authenticate_CB');
+Route::get('api_login', 'Auth/AuthController@authenticate_CB');
 // Route::get('api_login', function () {
 // 	print_r($_GET['auth_session_id']);
 // 	echo '<br>';
