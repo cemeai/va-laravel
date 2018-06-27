@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\User;
 use App\Subscription;
+use Auth;
 use Validator;
 use ChargeBee_Subscription;
 use ChargeBee_PortalSession;
