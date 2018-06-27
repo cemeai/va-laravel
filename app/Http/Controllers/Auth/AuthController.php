@@ -62,10 +62,10 @@ class AuthController extends Controller
 	}
 
 	public function authenticate_CB (Request $request) {
-		$result = ChargeBee_PortalSession::activate($request->auth_session_id, array(
+		$portal = ChargeBee_PortalSession::activate($request->auth_session_id, array(
 				"token" => $request->auth_session_token));
 
-		$customer_id = $$result->portalSession()->linkedCustomers[0]->email;
+		$customer_id = $portal->portalSession()->linkedCustomers[0]->email;
 		print_r($customer_id); echo '<br>'; exit();
 		$cb_subscriptions = ChargeBee_Subscription::all(array(
 			// "limit" => 1,
