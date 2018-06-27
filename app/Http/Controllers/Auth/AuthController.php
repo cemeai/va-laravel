@@ -72,6 +72,7 @@ class AuthController extends Controller
 			"customerId[is]" => $customer_id));
 		foreach ($cb_subscriptions as $cb_subscription) {
 			$subscription = $cb_subscription->subscription();
+			print_r($subscription); exit();
 		}
 		$user = Subscription::where('subscription_id', '=', $subscription->id)->first();
 		Auth::login($user);
