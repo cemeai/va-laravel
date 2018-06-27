@@ -80,9 +80,9 @@ class AuthController extends Controller
 		return redirect('dashboard');
 	}
 
-	public function logout () {
-		ChargeBee_PortalSession::logout($request->auth_session_id);
-	}
+	// public function logout () {
+	// 	ChargeBee_PortalSession::logout($request->auth_session_id);
+	// }
 
 	/**
 	 * Create a new user instance after a valid registration.
