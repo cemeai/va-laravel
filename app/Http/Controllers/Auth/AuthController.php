@@ -65,7 +65,7 @@ class AuthController extends Controller
 		$portal = ChargeBee_PortalSession::activate($request->auth_session_id, array(
 				"token" => $request->auth_session_token));
 
-		$email = $portal->portalSession()->linkedCustomers[0]->email;
+		$customer_id = $portal->portalSession()->customerId;
 		print_r($customer_id); echo '<br>'; exit();
 		$cb_subscriptions = ChargeBee_Subscription::all(array(
 			// "limit" => 1,
