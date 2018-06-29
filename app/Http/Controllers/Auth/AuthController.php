@@ -83,8 +83,7 @@ class AuthController extends Controller
 	}
 
 	public function logout () {
-		print_r(session('auth_session_id')); exit();
-		ChargeBee_PortalSession::logout(session('auth_session_id'));
+		// ChargeBee_PortalSession::logout(session('auth_session_id'));
 		Auth::logout();
 		return redirect('dashboard');
 	}
