@@ -8,6 +8,7 @@ use App\User;
 use App\Subscription;
 use Auth;
 use Validator;
+use Session;
 use ChargeBee_Subscription;
 use ChargeBee_PortalSession;
 use App\Http\Controllers\Controller;
@@ -73,16 +74,19 @@ class AuthController extends Controller
 		foreach ($cb_subscriptions as $cb_subscription) {
 			$subscription = $cb_subscription->subscription();
 		}
+
+		Session::set('auth_session_id', $request->auth_session_id);
+		Session::set('auth_session_token', $request->auth_session_token);
+		echo Session::get('auth_session_id'); exit();
 		$subscription = Subscription::where('subscription_id', '=', $subscription->id)->first();
 		$user = User::where('id', '=', $subscription->user_id)->first();
 		Auth::login($user);
-		session('auth_session_id', $request->auth_session_id);
-		session('auth_session_token', $request->auth_session_token);
 
 		return redirect('dashboard');
 	}
 
 	public function logout () {
+		echo Session::get('variableName'); exit();
 		// ChargeBee_PortalSession::logout(session('auth_session_id'));
 		Auth::logout();
 		return redirect('dashboard');
