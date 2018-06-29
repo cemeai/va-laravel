@@ -74,7 +74,7 @@ class AuthController extends Controller
 			$subscription = $cb_subscription->subscription();
 		}
 		$subscription = Subscription::where('subscription_id', '=', $subscription->id)->first();
-		$user = User::find($subscription->user_id)->first();
+		$user = User::where('id', '=', $subscription->user_id)->first();
 		print_r($user); echo '<br>'; exit();
 		Auth::login($user);
 
