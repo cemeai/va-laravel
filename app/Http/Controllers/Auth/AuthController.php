@@ -75,7 +75,6 @@ class AuthController extends Controller
 		}
 		$subscription = Subscription::where('subscription_id', '=', $subscription->id)->first();
 		$user = User::where('id', '=', $subscription->user_id)->first();
-		print_r($user); echo '<br>'; exit();
 		Auth::login($user);
 
 		return redirect('dashboard');
