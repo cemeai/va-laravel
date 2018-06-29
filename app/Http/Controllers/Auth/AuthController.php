@@ -76,13 +76,17 @@ class AuthController extends Controller
 		$subscription = Subscription::where('subscription_id', '=', $subscription->id)->first();
 		$user = User::where('id', '=', $subscription->user_id)->first();
 		Auth::login($user);
+		session('auth_session_id', $auth_session_id);
+		session('auth_session_token', $auth_session_token);
 
 		return redirect('dashboard');
 	}
 
-	// public function logout () {
-	// 	ChargeBee_PortalSession::logout($request->auth_session_id);
-	// }
+	public function logout () {
+		ChargeBee_PortalSession::logout(session('auth_session_id'));
+		Auth::logout();
+		return Redirect::route('home');
+	}
 
 	/**
 	 * Create a new user instance after a valid registration.
