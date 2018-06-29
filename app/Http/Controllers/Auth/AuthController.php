@@ -66,13 +66,13 @@ class AuthController extends Controller
 				"token" => $request->auth_session_token));
 
 		$customer_id = $portal->portalSession()->customerId;
-		print_r($customer_id); echo '<br>'; exit();
 		$cb_subscriptions = ChargeBee_Subscription::all(array(
-			// "limit" => 1,
-			// "planId[is]" => "va-now-40", 
+			"limit" => 1,
+			"planId[is]" => "va-now-40", 
 			"customerId[is]" => $customer_id));
 		foreach ($cb_subscriptions as $cb_subscription) {
 			$subscription = $cb_subscription->subscription();
+			print_r($subscription); echo '<br>';
 		}
 		$user = Subscription::where('subscription_id', '=', $subscription->id)->first();
 		Auth::login($user);
