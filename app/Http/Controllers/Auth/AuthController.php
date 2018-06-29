@@ -77,7 +77,6 @@ class AuthController extends Controller
 
 		Session::set('auth_session_id', $request->auth_session_id);
 		Session::set('auth_session_token', $request->auth_session_token);
-		echo Session::get('auth_session_id'); exit();
 		$subscription = Subscription::where('subscription_id', '=', $subscription->id)->first();
 		$user = User::where('id', '=', $subscription->user_id)->first();
 		Auth::login($user);
@@ -86,8 +85,7 @@ class AuthController extends Controller
 	}
 
 	public function logout () {
-		echo Session::get('variableName'); exit();
-		// ChargeBee_PortalSession::logout(session('auth_session_id'));
+		ChargeBee_PortalSession::logout(Session::get('variableName'));
 		Auth::logout();
 		return redirect('dashboard');
 	}
