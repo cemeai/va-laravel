@@ -27,11 +27,7 @@ Route::get('usage', 'HomeController@usage');
 Route::get('billing', 'HomeController@billing');
 Route::get('invoices', 'HomeController@invoices');
 Route::get('api_login', 'Auth\AuthController@authenticate_CB');
-// Route::get('api_login', function () {
-// 	print_r($_GET['auth_session_id']);
-// 	echo '<br>';
-// 	print_r($_GET['auth_session_token']);
-// });
+Route::get('api_register', 'Auth\AuthController@api_register');
 
 // ACTIONS
 Route::get('/get_cb_users', 'UserController@get_cb_users');

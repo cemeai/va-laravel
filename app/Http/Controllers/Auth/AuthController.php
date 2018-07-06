@@ -84,8 +84,51 @@ class AuthController extends Controller
 		return redirect('dashboard');
 	}
 
+	public function api_register (Request $request) {
+		$data = array();
+		if ($request->api_key == getenv('API_KEY')) {
+			$user = new User();
+			$user->name = $request->fname;
+			$user->last_name = $request->lname;
+			$user->email = $request->email;
+			$user->phone = $request->phone;
+			$user->password = bcrypt('12345');
+			$user->save();
+
+			if (!$user) {
+				$data['mssg'] = 'The user could not be created';
+				$data['success'] = false;
+				echo json_encode($data); exit();
+			}
+
+			$subscription = new Subscription();
+			$subscription->harvest_id = $request->harvest_id;
+			$subscription->subscription_id = $request->subscription_id;
+			$subscription->plan_id = $request->plan_id;
+			$subscription->user_id = $user->id;
+			$subscription->created_at = date('Y-m-d H:i:s');
+			$subscription->updated_at = date('Y-m-d H:i:s');
+			$subscription->save();
+
+			if (!$subscription) {
+				$data['mssg'] = 'The subscription could not be created';
+				$data['success'] = false;
+				echo json_encode($data); exit();
+			}
+
+			$data['mssg'] = 'User was register correctly int the portal!';
+			$data['success'] = true;
+		} else {
+			$data['mssg'] = 'API key is incorrect';
+			$data['success'] = false;
+		}
+		echo json_encode($data); exit();
+	}
+
 	public function logout () {
-		ChargeBee_PortalSession::logout(Session::get('auth_session_id'));
+		if (Session::get('auth_session_id') !== null) {
+			ChargeBee_PortalSession::logout(Session::get('auth_session_id'));
+		}
 		Auth::logout();
 		return redirect('dashboard');
 	}
@@ -96,35 +139,35 @@ class AuthController extends Controller
 	 * @param  array  $data
 	 * @return User
 	 */
-	protected function create(array $data)
-	{
-		$cb_obj = ChargeBee_Customer::all(array(
-			"limit" => 1,
-			"email[is]" => $data['email'],
-		));
-		foreach ($cb_obj as $cb_customer) {
-			$customer = $cb_customer->customer();
-			$cb_subs = ChargeBee_Subscription::all(array(
-				"limit" => 1, 
-				"customerId[is]" => $customer->id,
-				"status[is]" => 'active',
-			));
-			if (count($cb_subs) > 0) {
-				foreach ($cb_subs as $cb_sub) {
-					$sub = $cb_sub->subscription();
-				}
-			} else {
-				$errors = ['Chargebee customer does not exists!'];
-				return view('register', compact('errors'));
-			}
-		}
+	// protected function create(array $data)
+	// {
+	// 	$cb_obj = ChargeBee_Customer::all(array(
+	// 		"limit" => 1,
+	// 		"email[is]" => $data['email'],
+	// 	));
+	// 	foreach ($cb_obj as $cb_customer) {
+	// 		$customer = $cb_customer->customer();
+	// 		$cb_subs = ChargeBee_Subscription::all(array(
+	// 			"limit" => 1, 
+	// 			"customerId[is]" => $customer->id,
+	// 			"status[is]" => 'active',
+	// 		));
+	// 		if (count($cb_subs) > 0) {
+	// 			foreach ($cb_subs as $cb_sub) {
+	// 				$sub = $cb_sub->subscription();
+	// 			}
+	// 		} else {
+	// 			$errors = ['Chargebee customer does not exists!'];
+	// 			return view('register', compact('errors'));
+	// 		}
+	// 	}
 
-		// return User::create([
-		//     'name' => $data['name'],
-		//     'last_name' => $data['last_name'],
-		//     'email' => $data['email'],
-		//     'phone' => $data['phone'],
-		//     'password' => bcrypt($data['password']),
-		// ]);
-	}
+	// 	// return User::create([
+	// 	//     'name' => $data['name'],
+	// 	//     'last_name' => $data['last_name'],
+	// 	//     'email' => $data['email'],
+	// 	//     'phone' => $data['phone'],
+	// 	//     'password' => bcrypt($data['password']),
+	// 	// ]);
+	// }
 }
