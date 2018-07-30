@@ -87,7 +87,10 @@ class AuthController extends Controller
 	public function api_register (Request $request) {
 		$data = array();
 		if ($request->api_key == getenv('API_KEY')) {
-			$user = new User();
+			$user = User::where('phone', '=', $request->phone)->get();
+			if (empty($user)) {
+				$user = new User();
+			}
 			$user->name = $request->fname;
 			$user->last_name = $request->lname;
 			$user->email = $request->email;
@@ -101,9 +104,12 @@ class AuthController extends Controller
 				echo json_encode($data); exit();
 			}
 
-			$subscription = new Subscription();
+			$subscription = Subscription::where('subscription_id', '=', $request->subscription_id)->get();
+			if (empty($subscription)) {
+				$subscription = new Subscription();
+			}
 			$subscription->harvest_id = $request->harvest_id;
-			$subscription->subscription_id = $request->subscription_id;
+			$subscription->subscription_id = isset($request->subscription_id)? $request->subscription_id: 1;
 			$subscription->plan_id = $request->plan_id;
 			$subscription->user_id = $user->id;
 			$subscription->created_at = date('Y-m-d H:i:s');
