@@ -104,12 +104,13 @@ class AuthController extends Controller
 				echo json_encode($data); exit();
 			}
 
-			$subscription = Subscription::where('subscription_id', '=', $request->subscription_id)->get();
+			$sub_id = ($request->subscription_id == 'NA')? $str_random(16).'-trial': $request->subscription_id;
+			$subscription = Subscription::where('subscription_id', '=', $sub_id)->get();
 			if (empty($subscription)) {
 				$subscription = new Subscription();
 			}
 			$subscription->harvest_id = $request->harvest_id;
-			$subscription->subscription_id = isset($request->subscription_id)? $request->subscription_id: 1;
+			$subscription->subscription_id = $sub_id;
 			$subscription->plan_id = $request->plan_id;
 			$subscription->user_id = $user->id;
 			$subscription->created_at = date('Y-m-d H:i:s');
