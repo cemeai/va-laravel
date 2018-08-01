@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.0",
         "chargebee/chargebee-php": "2.*|3.*",
         "google/apiclient": "2.0.*"
     },
