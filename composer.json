@@ -7,7 +7,7 @@
     "require": {
         "php": ">=7.1",
         "chargebee/chargebee-php": "2.*|3.*",
-        "google/apiclient": "2.0.*",
+        "google/apiclient": "2.0.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
