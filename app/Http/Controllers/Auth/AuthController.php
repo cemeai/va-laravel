@@ -84,6 +84,7 @@ class AuthController extends Controller
 		return redirect('dashboard');
 	}
 
+// https://portal.virtualassistants.today/api_register?api_key=DK2H30D27C&fname=Krsitan&lname=Widjaja&email=kristian@jonajo.com&phone=234234&harvest_id=5344089&subscription_id=NA&plan_id=free-trial
 	public function api_register (Request $request) {
 		$data = array();
 		if ($request->api_key == getenv('API_KEY')) {
