@@ -12,6 +12,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Time consumption</div>
 				<div class="panel-body">
+					<div>{!! $chart->container() !!}</div>
 				</div>
 			</div>
 			<div class="panel panel-default">
@@ -70,4 +71,8 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('content')
+<script src="path/to/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 @endsection
