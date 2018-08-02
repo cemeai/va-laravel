@@ -124,7 +124,7 @@ class AuthController extends Controller
 				echo json_encode($data); exit();
 			}
 
-			$data['mssg'] = 'User was register correctly int the portal!';
+			$data['mssg'] = 'User registered correctly in the portal!';
 			$data['success'] = true;
 		} else {
 			$data['mssg'] = 'API key is incorrect';
