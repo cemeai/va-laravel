@@ -105,7 +105,7 @@ class AuthController extends Controller
 				echo json_encode($data); exit();
 			}
 
-			$sub_id = ($request->subscription_id == 'NA')? $str_random(16).'-trial': $request->subscription_id;
+			$sub_id = ($request->subscription_id == 'NA')? str_random(16).'-trial': $request->subscription_id;
 			$subscription = Subscription::where('subscription_id', '=', $sub_id)->first();
 			if (empty($subscription)) {
 				$subscription = new Subscription();
