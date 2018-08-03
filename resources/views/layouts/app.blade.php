@@ -7,7 +7,7 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<meta name="google-signin-client_id" content="755558337802-eqn5sdg7agseddvb1vtmhh90lfj9va1q.apps.googleusercontent.com">
 	
-	<title>VA Now</title>
+	<title>VA Today</title>
 
 	<!-- Fonts -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
@@ -50,7 +50,7 @@
 				</button>
 
 				<!-- Branding Image -->
-				<a class="navbar-brand" href="{{ url('/') }}">VA Now</a>
+				<a class="navbar-brand" href="{{ url('/') }}">VA Today</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="app-navbar-collapse">

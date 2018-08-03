@@ -5,14 +5,47 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
-				<div class="panel-heading">Complate plan</div>
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-10">Complete plan</div>
+						<div class="col-xs-2 text-right"><h4 style="margin: 0;">{{$plan}} Hours Total</h4></div>
+					</div>
+				</div>
 				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-11">
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" style="width: {{$percentage_usage}}%" 
+									aria-valuenow="{{$percentage_usage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage_usage}}%</div>
+							</div>
+						</div>
+						<div class="col-sm-1" style="padding: 0px;">
+							<h5 style="margin: 0;"><small style="color: #adadad;"">{{$plan - $consumption}} hours left</small></h5>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="panel panel-default">
-				<div class="panel-heading">Time consumption</div>
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-6">Time consumption</div>
+						<div class="col-xs-2 text-right">Date Filter</div>
+						<div class="col-xs-2">
+							<div class="input-group input-group-sm">
+								<span class="input-group-addon" id="icon-from"><i class="glyphicon glyphicon-calendar"></i></span>
+							  <input type="text" class="form-control" id="date-from" placeholder="From" aria-describedby="icon-from" value="{{date('m/01/Y')}}">
+							</div>
+						</div>
+						<div class="col-xs-2">
+							<div class="input-group input-group-sm">
+								<span class="input-group-addon" id="icon-from"><i class="glyphicon glyphicon-calendar"></i></span>
+							  <input type="text" class="form-control" id="date-to" onchange="filter_usage()" placeholder="To" aria-describedby="icon-from" value="{{date('m/t/Y')}}">
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="panel-body">
-					<div>{!! $chart->container() !!}</div>
+					<div id="usage-chart"></div>
 				</div>
 			</div>
 			<div class="panel panel-default">
@@ -73,6 +106,18 @@
 </div>
 @endsection
 
-@section('content')
-<script src="path/to/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+@section('scripts')
+<script type="text/javascript">
+	var usage_chart_data = [
+		@foreach ($month as $key => $day)
+			{
+				"label": "{{$day['date']}}",
+				"value": "{{$day['hours']}}",
+			},
+		@endforeach
+	];
+</script>
+<script src="{{ asset('bower_components/fusioncharts/fusioncharts.js') }}"></script>
+<script src="{{ asset('bower_components/fusioncharts/themes/fusioncharts.theme.fint.js') }}"></script>
+<script src="{{ asset('js/dashboard.js') }}"></script>
 @endsection

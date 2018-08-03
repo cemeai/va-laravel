@@ -35,4 +35,5 @@ Route::post('/update_billing', 'UserController@update_billing');
 Route::post('/update_payment', 'UserController@update_payment');
 Route::post('/filter_invoices', 'HomeController@filter_invoices');
 Route::post('/filter_usage', 'HomeController@filter_usage');
+Route::post('/filter_usage_dashboard', 'HomeController@filter_usage_dashboard');
 Route::get('/harvest_test', 'UserController@harvest_test');
