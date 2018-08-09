@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use ChargeBee_Subscription;
 use ChargeBee_Invoice;
+use ChargeBee_Plan;
 use ChargeBee_HostedPage;
 use Auth;
 use App\User;
@@ -76,7 +77,7 @@ class HomeController extends Controller
 			"sortBy[asc]" => "date"));
 
 		// Progress bar
-		$plan = ($cb_sub->planId == 'va-complete-plan-240')? 25: 0;
+		$plan = ChargeBee_Plan::retrieve($cb_sub->planId)->plan()->cfHours;
 		$consumption = 0;
 
 		// Usage entries
@@ -94,7 +95,7 @@ class HomeController extends Controller
 		$month[strtotime(date('Y-m-d 00:00:00', $cb_sub->currentTermEnd))]['date'] = date('d-m', $end_term);
 
 		if (isset($response)) {
-			print_r($response);
+			// print_r($response);
 			$time_entries = json_decode($response, 1);
 			foreach ($time_entries['time_entries'] as $key => $entry) {
 				if ($entry['project']['id'] == $harvest_id 
