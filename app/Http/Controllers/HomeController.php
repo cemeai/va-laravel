@@ -94,6 +94,7 @@ class HomeController extends Controller
 		$month[strtotime(date('Y-m-d 00:00:00', $cb_sub->currentTermEnd))]['date'] = date('d-m', $end_term);
 
 		if (isset($response)) {
+			print_r($response);
 			$time_entries = json_decode($response, 1);
 			foreach ($time_entries['time_entries'] as $key => $entry) {
 				if ($entry['project']['id'] == $harvest_id 
