@@ -1,30 +1,27 @@
 $(document).ready( function() {
-	$('#date-from').datepicker();
-	$('#date-to').datepicker();
-
+	chart_config = {
+		"xAxisName": "Day",
+		"yAxisName": "Hours",
+		"theme": "fint",
+		"valueAlpha": 0,
+		"lineColor": "#2c82be",
+		"showPlotBorder": 1,
+		"plotBorderThickness": "1",
+		"plotFillColor": "#cae0ef",
+		"drawAnchors": 1,
+		"plottooltext": "$name<br> $value Hours",
+		"toolTipBgColor": "#5a6574",
+		"rotateLabels": 0,
+	};
 	FusionCharts.ready(function() {
-		var usage_chart = new FusionCharts({
+		usage_chart = new FusionCharts({
 			"type": "area2D",
 			"renderAt": "usage-chart",
 			"width": "100%",
 			"height": "300",
 			"dataFormat": "json",
 			"dataSource": {
-				"chart": {
-					"xAxisName": "Day",
-					"yAxisName": "Hours",
-					"theme": "fint",
-					"valueAlpha": 0,
-					"lineColor": "#2c82be",
-					"showPlotBorder": 1,
-					"plotBorderThickness": "1",
-					"plotFillColor": "#cae0ef",
-					"drawAnchors": 1,
-					"plottooltext": "$name<br> $value Hours",
-					"toolTipBgColor": "#5a6574",
-					"labelDisplay": "rotate",
-					"slantLabel": "1",
-				},
+				"chart": chart_config,
 				"data": usage_chart_data
 			}
     });
@@ -35,8 +32,7 @@ $(document).ready( function() {
 function filter_usage() {
 	data = {
 		'_token': $('meta[name="csrf-token"]').attr('content'),
-		'date_from': $('#date-from').val(),
-		'date_to': $('#date-to').val(),
+		'cycle': $('#cycle').val(),
 	};
 	$.ajax({
 		url: 'filter_usage_dashboard',
@@ -45,13 +41,18 @@ function filter_usage() {
 		dataType: 'json',
 		success: function (data) {
 			$('#usage-table tbody').html('');
-			var usage_chart_data = [];
+			usage_chart_data = [];
 			$.each(data, function() {
 				usage_chart_data.push({
 					"label": this['date'],
 					"value": this['hours'],
 				});
 			});
+			usage_chart.setJSONData({
+				"chart": chart_config,
+				"data": usage_chart_data
+			});
+			usage_chart.render();
 			console.log(usage_chart_data);
 		},
 		error: function (data) {

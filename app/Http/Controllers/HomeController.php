@@ -88,11 +88,11 @@ class HomeController extends Controller
 		$end_term = strtotime(date('Y-m-d 23:59:59', $cb_sub->currentTermEnd));
 		for ($i = $srt_term; $i <= $end_term; $i+= 86400) { 
 			$month[$i] = array();
-			$month[$i]['date'] = ($i%2 == 0)? date('d-m', $i): '';
+			$month[$i]['date'] = ($i%2 == 0)? date('d', $i): '';
 			$month[$i]['hours'] = 0;
 		}
-		$month[$srt_term]['date'] = date('d-m', $srt_term);
-		$month[strtotime(date('Y-m-d 00:00:00', $cb_sub->currentTermEnd))]['date'] = date('d-m', $end_term);
+		$month[$srt_term]['date'] = date('M', $srt_term);
+		$month[strtotime(date('Y-m-d 00:00:00', $cb_sub->currentTermEnd))]['date'] = date('M', $end_term);
 
 		if (isset($response)) {
 			// print_r($response);
@@ -109,7 +109,17 @@ class HomeController extends Controller
 		}
 		$percentage_usage = $consumption*100 / $plan;
 
-		return view('dashboard', compact('cb_sub', 'cb_card', 'cb_billing', 'cb_invoices', 'month', 'plan', 'consumption', 'percentage_usage'));
+		$billing_cycles = array();
+		$billing_cut = date('Y-m-d', $cb_sub->currentTermStart);
+		for ($i = 0; $i < 18; $i++) { 
+			$billing_cycles[date('Y-m-d', strtotime($billing_cut))] = date('F d', strtotime($billing_cut)).' - '.
+																																date('F d', strtotime($billing_cut. '+1 month')).
+																																' ('.date('Y', strtotime($billing_cut)).')';
+			$billing_cut = date('Y-m-d', strtotime($billing_cut.' -1 month'));
+		}
+		// print_r($billing_cycles); exit();
+
+		return view('dashboard', compact('cb_sub', 'cb_card', 'cb_billing', 'cb_invoices', 'month', 'plan', 'consumption', 'percentage_usage', 'billing_cycles'));
 	}
 
 	public function billing (Request $request) {
@@ -160,27 +170,29 @@ class HomeController extends Controller
 	}
 
 	public function filter_usage_dashboard (Request $request) {
-		$from = explode('/', $request->date_from);
-		$to = explode('/', $request->date_to);
+		$from = $request->cycle;
 		$harvest_id = Auth::user()->subscription->harvest_id;
 		$response = $this->HV_entires();
 		$month = array();
-		for ($i = 1; $i <= intval(date('t')); $i++) { 
+		$srt_term = strtotime(date('Y-m-d 00:00:00', strtotime($from)));
+		$end_term = strtotime(date('Y-m-d 23:59:59', strtotime($from.' +1 month')));
+		for ($i = $srt_term; $i <= $end_term; $i+= 86400) { 
 			$month[$i] = array();
-			$month[$i]['date'] = ($i%2 == 0)? date('d-m', strtotime('2018-'.date('m').'-'.$i)): '';
+			$month[$i]['date'] = ($i%2 == 0)? date('d', $i): '';
 			$month[$i]['hours'] = 0;
 		}
-		$month[1]['date'] = date('d-m', strtotime('2018-'.date('m').'-1'));
-		$month[count($month)]['date'] = date('d-m', strtotime('2018-'.date('m-t')));
+
+		$month[$srt_term]['date'] = date('M', $srt_term);
+		$month[strtotime(date('Y-m-d 00:00:00', strtotime($from.' +1 month')))]['date'] = date('M', $end_term);
 
 		if (isset($response)) {
 			$time_entries = json_decode($response, 1);
 			foreach ($time_entries['time_entries'] as $key => $entry) {
 				if ($entry['project']['id'] == $harvest_id 
-					&& $entry['spent_date'] >= date('Y-m-01') && $entry['spent_date'] <= date('Y-m-t')) {
-					$index = intval(date('d-m', strtotime($entry['spent_date'])));
-					$month[$index] = array();
-					$month[$index]['date'] = date('d-m', strtotime($entry['spent_date']));
+					&& $entry['spent_date'] >= date('Y-m-d', $srt_term) && $entry['spent_date'] <= date('Y-m-d', $end_term)) {
+					$index = strtotime($entry['spent_date']);
+					// $month[$index]['date'] = date('d-m', strtotime($entry['spent_date']));
+					$consumption = $consumption + $entry['hours'];
 					$month[$index]['hours'] = $month[$index]['hours'] + $entry['hours'];
 				}
 			}

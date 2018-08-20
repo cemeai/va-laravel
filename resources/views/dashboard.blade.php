@@ -30,16 +30,15 @@
 					<div class="row">
 						<div class="col-xs-6">Time consumption</div>
 						<div class="col-xs-2 text-right">Date Filter</div>
-						<div class="col-xs-2">
+						<div class="col-xs-4">
 							<div class="input-group input-group-sm">
 								<span class="input-group-addon" id="icon-from"><i class="glyphicon glyphicon-calendar"></i></span>
-							  <input type="text" class="form-control" id="date-from" placeholder="From" aria-describedby="icon-from" value="{{date('m/01/Y')}}">
-							</div>
-						</div>
-						<div class="col-xs-2">
-							<div class="input-group input-group-sm">
-								<span class="input-group-addon" id="icon-from"><i class="glyphicon glyphicon-calendar"></i></span>
-							  <input type="text" class="form-control" id="date-to" onchange="filter_usage()" placeholder="To" aria-describedby="icon-from" value="{{date('m/t/Y')}}">
+							  <!-- <input type="text" class="form-control" id="date-from" placeholder="From" aria-describedby="icon-from" value="{{date('m/01/Y')}}"> -->
+							  <select class="form-control" id="cycle" onchange="filter_usage()">
+									@foreach ($billing_cycles as $key => $billing_cycle)
+							  		<option value="{{$key}}">{{$billing_cycle}}</option>
+							  	@endforeach
+							  </select>
 							</div>
 						</div>
 					</div>
