@@ -66,6 +66,7 @@ class AuthController extends Controller
 		$portal = ChargeBee_PortalSession::activate($request->auth_session_id, array(
 				"token" => $request->auth_session_token));
 
+		$subscripton = null;
 		$customer_id = $portal->portalSession()->customerId;
 		$cb_subscriptions = ChargeBee_Subscription::all(array(
 			"limit" => 1,
@@ -75,13 +76,17 @@ class AuthController extends Controller
 			$subscription = $cb_subscription->subscription();
 		}
 
-		Session::set('auth_session_id', $request->auth_session_id);
-		Session::set('auth_session_token', $request->auth_session_token);
-		$subscription = Subscription::where('subscription_id', '=', $subscription->id)->first();
-		$user = User::where('id', '=', $subscription->user_id)->first();
-		Auth::login($user);
+		if (isset($subscription)) {
+			Session::set('auth_session_id', $request->auth_session_id);
+			Session::set('auth_session_token', $request->auth_session_token);
+			$subscription = Subscription::where('subscription_id', '=', $subscription->id)->first();
+			$user = User::where('id', '=', $subscription->user_id)->first();
+			Auth::login($user);
 
-		return redirect('dashboard');
+			return redirect('dashboard');
+		}
+
+		return redirect('no_sub');
 	}
 
 // https://portal.virtualassistants.today/api_register?api_key=DK2H30D27C&fname=Krsitan&lname=Widjaja&email=kristian@jonajo.com&phone=234234&harvest_id=5344089&subscription_id=NA&plan_id=free-trial
