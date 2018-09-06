@@ -100,7 +100,7 @@ class AuthController extends Controller
 			$user->last_name = $request->lname;
 			$user->email = $request->email;
 			$user->phone = $request->phone;
-			$user->password = bcrypt('12345');
+			$user->password = bcrypt('123456');
 			$user->save();
 
 			if (!$user) {
@@ -110,16 +110,16 @@ class AuthController extends Controller
 			}
 
 			$sub_id = ($request->subscription_id == 'NA')? str_random(16).'-trial': $request->subscription_id;
-			$subscription = Subscription::where('subscription_id', '=', $sub_id)->first();
+			$subscription = Subscription::where('user_id', '=', $user->id)->first();
 			if (empty($subscription)) {
 				$subscription = new Subscription();
+				$subscription->harvest_id = $request->harvest_id;
+				$subscription->user_id = $user->id;
+				$subscription->created_at = date('Y-m-d H:i:s');
+				$subscription->updated_at = date('Y-m-d H:i:s');
 			}
-			$subscription->harvest_id = $request->harvest_id;
 			$subscription->subscription_id = $sub_id;
 			$subscription->plan_id = $request->plan_id;
-			$subscription->user_id = $user->id;
-			$subscription->created_at = date('Y-m-d H:i:s');
-			$subscription->updated_at = date('Y-m-d H:i:s');
 			$subscription->save();
 
 			if (!$subscription) {
