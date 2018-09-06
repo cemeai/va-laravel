@@ -68,10 +68,10 @@ class AuthController extends Controller
 
 		$subscripton = null;
 		$customer_id = $portal->portalSession()->customerId;
-		print_r($portal->portalSession()->customerId); exit();
 		$cb_subscriptions = ChargeBee_Subscription::all(array(
 			"limit" => 1,
 			"customerId[is]" => $customer_id));
+		print_r($cb_subscriptions); exit();
 		foreach ($cb_subscriptions as $cb_subscription) {
 			$subscription = $cb_subscription->subscription();
 		}
