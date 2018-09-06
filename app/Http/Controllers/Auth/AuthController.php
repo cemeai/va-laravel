@@ -79,7 +79,7 @@ class AuthController extends Controller
 			Session::set('auth_session_id', $request->auth_session_id);
 			Session::set('auth_session_token', $request->auth_session_token);
 			$subscription = Subscription::where('subscription_id', '=', $subscription->id)->first();
-			print_r($subscription);
+			print_r($subscription); exit();
 			$user = User::where('id', '=', $subscription->user_id)->first();
 			Auth::login($user);
 
