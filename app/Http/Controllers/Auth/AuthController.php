@@ -74,7 +74,6 @@ class AuthController extends Controller
 		foreach ($cb_subscriptions as $cb_subscription) {
 			$subscription = $cb_subscription->subscription();
 		}
-		print_r($subscription);
 
 		if (isset($subscription)) {
 			Session::set('auth_session_id', $request->auth_session_id);
