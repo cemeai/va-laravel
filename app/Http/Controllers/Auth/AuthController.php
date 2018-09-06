@@ -71,10 +71,10 @@ class AuthController extends Controller
 		$cb_subscriptions = ChargeBee_Subscription::all(array(
 			"limit" => 1,
 			"customerId[is]" => $customer_id));
-		print_r($cb_subscriptions); exit();
 		foreach ($cb_subscriptions as $cb_subscription) {
 			$subscription = $cb_subscription->subscription();
 		}
+		print_r($subscription);
 
 		if (isset($subscription)) {
 			Session::set('auth_session_id', $request->auth_session_id);
